@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">WebsocketExampleClient</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_login">Ingresa tu token</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_clave_acceso">Clave Acceso</string>
+    <string name="prompt_clave_privada">Clave Privada</string>
+    <string name="action_sign_in">Activar Token</string>
+    <string name="action_sign_in_short">Activar Token</string>
+    <string name="error_invalid_email">Esta Clave de Acceso es Inválida</string>
+    <string name="error_invalid_password">Esta Clave Privada es Inválida</string>
+    <string name="error_incorrect_password">Esta Clave Privada es Incorrecta</string>
+    <string name="error_field_required">Este campo es requerido</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="title_activity_tablero">BIT</string>
+
+</resources>
