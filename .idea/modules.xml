@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ProjectModuleManager">
-    <modules />
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/isbit/isbit.iml" filepath="$PROJECT_DIR$/isbit/isbit.iml" />
+      <module fileurl="file://$PROJECT_DIR$/isbit_android_client.iml" filepath="$PROJECT_DIR$/isbit_android_client.iml" />
+    </modules>
   </component>
 </project>
