@@ -26,15 +26,13 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.isbit.movil.RealTimeMarketData"
-            android:label="@string/app_name">
-
-        </activity>
+            android:name=".RealTimeMarketData"
+            android:label="@string/app_name"></activity>
         <activity
-            android:name="com.isbit.movil.LoginActivity"
+            android:name=".LoginActivity"
             android:label="@string/title_activity_login" />
         <activity
-            android:name="com.isbit.movil.Tablero"
+            android:name=".Tablero"
             android:label="@string/title_activity_tablero">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -42,6 +40,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".FundsActivity"
+            android:label="@string/title_activity_funds"></activity>
     </application>
 
 </manifest>

@@ -30,9 +30,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.StringTokenizer;
 
 public class Tablero extends ListActivity {
 
+    public  static  final String TAG = "Tablero";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -163,7 +165,7 @@ public class Tablero extends ListActivity {
                 // Intent login_activity_intent = new Intent(Tablero.this, LoginActivity.class);
                 // startActivity(login_activity_intent);
                 Intent intent = new Intent("com.google.zxing.client.android.SCAN");
-                intent.putExtra("SCAN_MODE", "PRODUCT_MODE");//for Qr code, its "QR_CODE_MODE" instead of "PRODUCT_MODE"
+                intent.putExtra("SCAN_MODE", "QR_CODE_MODE");//for Qr code, its "QR_CODE_MODE" instead of "PRODUCT_MODE"
                 intent.putExtra("SAVE_HISTORY", false);//this stops saving ur barcode in barcode scanner app's history
                 startActivityForResult(intent, 0);
             }
@@ -255,16 +257,27 @@ public class Tablero extends ListActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.i(TAG, "onActivityResult(requestCode="+requestCode+", resultCode, data="+data+")");
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
                 String contents = data.getStringExtra("SCAN_RESULT"); //this is the result
 
                 try {
                     JSONObject yeison = new JSONObject(contents);
-                    String key = yeison.getString("key");
-                    String secret = yeison.getString("secret");
+                    String access_key = yeison.getString("access_key");
+                    String secret_key = yeison.getString("secret_key");
+                    String url_host = yeison.getString("url_host");
+                    String url_schema = yeison.getString("url_schema");
 
-                    Log.e("api", key + " " + secret);
+                    DB.save_key_value_pair(Tablero.this, DB.access_key,access_key);
+                    DB.save_key_value_pair(Tablero.this, DB.secret_key,secret_key);
+                    DB.save_key_value_pair(Tablero.this, DB.url_host  ,url_host);
+                    DB.save_key_value_pair(Tablero.this, DB.url_schema,url_schema);
+
+                    Intent intent = new Intent(Tablero.this, FundsActivity.class);
+                    startActivity(intent);
+
+                    Log.e("api", secret_key + " " + access_key);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

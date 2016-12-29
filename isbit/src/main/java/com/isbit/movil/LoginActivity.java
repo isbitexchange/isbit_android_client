@@ -270,7 +270,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             mEmail = clave_acceso;
             mPassword = password;
 
-            DB.save_keys(LoginActivity.this,password, clave_acceso);
         }
 
         @Override

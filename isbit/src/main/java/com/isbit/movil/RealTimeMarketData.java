@@ -86,7 +86,9 @@ public class RealTimeMarketData extends Activity {
     private void connectWebSocket() {
         URI uri;
         try {
-            uri = new URI("ws://isbit.co:8080");
+
+            String host = DB.query_url_host(RealTimeMarketData.this);
+            uri = new URI("ws://"+host+":8080");
         } catch (URISyntaxException e) {
             e.printStackTrace();
             return;
