@@ -1,9 +1,14 @@
 package org.bitcoin.market;
 
+import android.content.Context;
+import android.util.Log;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Throwables;
+import com.isbit.movil.DB;
+
 import org.bitcoin.common.FiatConverter;
 import org.bitcoin.common.HttpUtils;
 import org.bitcoin.market.bean.*;
@@ -26,13 +31,16 @@ import java.util.*;
 public class IsbitMXNApi extends AbstractMarketApi {
     private static final Logger LOG = LoggerFactory.getLogger(IsbitMXNApi.class);
 
-    private static final String ISBIT_URL = "https://isbit.co";
+    private static  String ISBIT_URL = "http://isbit.co";
+      //private static  String ISBIT_URL = "http://isbit.ddns.net:3006";
+
     private static final long DURATION = 1000;
     private static final int TIME_OUT = 15000;
 
-    public IsbitMXNApi() {
-        super(org.bitcoin.market.bean.Currency.MXN, Market.IsbitMXN);
-    }
+    public IsbitMXNApi(Context context) {
+        super(context, org.bitcoin.market.bean.Currency.MXN, Market.IsbitMXN);
+        ISBIT_URL = DB.get_isbit_url(context);
+            }
 
     @Override
     Long createNonce() {
@@ -42,7 +50,7 @@ public class IsbitMXNApi extends AbstractMarketApi {
     @Override
     public Long buy(AppAccount appAccount, double amount, double price, SymbolPair symbolPair, OrderType orderType) {
 
-        price = FiatConverter.toMXN(price);
+       // price = FiatConverter.toMXN(price);
         TreeMap<String, String> params = new TreeMap<String, String>();
         params.put("side", "buy");
         JSONObject response = trade(appAccount, amount, price, params, symbolPair, orderType);
@@ -54,7 +62,7 @@ public class IsbitMXNApi extends AbstractMarketApi {
 
     @Override
     public Long sell(AppAccount appAccount, double amount, double price, SymbolPair symbolPair, OrderType orderType) {
-        price = FiatConverter.toMXN(price);
+       // price = FiatConverter.toMXN(price); //<--- this modfies the price... it increases it distoring everything... BAG BUG. removed!
         TreeMap<String, String> params = new TreeMap<String, String>();
         params.put("side", "sell");
         JSONObject response = trade(appAccount, amount, price, params, symbolPair, orderType);
@@ -169,9 +177,15 @@ public class IsbitMXNApi extends AbstractMarketApi {
             }
             if (currency1.equals("mxn")) {
                 asset.setAvailableMxn(balance.getDouble("balance"));
-                asset.setAvailableUsd(FiatConverter.toUsd(asset.getAvailableMxn()));
+               // asset.setAvailableMxn(FiatConverter.toUsd(asset.getAvailableMxn()));
                 asset.setFrozenMxn(balance.getDouble("locked"));
-                asset.setFrozenUsd(FiatConverter.toUsd(asset.getFrozenMxn()));
+                //asset.setFrozenMxn(FiatConverter.toUsd(asset.getFrozenMxn()));
+            }
+            if (currency1.equals("usd")) {
+                asset.setAvailableUsd(balance.getDouble("balance"));
+                asset.setFrozenUsd(balance.getDouble("locked"));
+                //asset.setAvailableUsd(FiatConverter.toUsd(asset.getAvailableMxn()));
+                //asset.setFrozenUsd(FiatConverter.toUsd(asset.getFrozenMxn()));
             }
         }
         return asset;
@@ -298,6 +312,24 @@ public class IsbitMXNApi extends AbstractMarketApi {
             throw Throwables.propagate(e);
         } finally {
             LOG.info("send_request result:{}", response);
+
+            com.alibaba.fastjson.JSONObject  json_resp = com.alibaba.fastjson.JSONObject.parseObject(response);
+
+            try {
+
+                String sn = json_resp.getString("sn");
+                String email = json_resp.getString("email");
+                String name = json_resp.getString("name");
+                String activated = json_resp.getBoolean("activated").toString();
+                DB.save_key_value_pair(context, "sn", sn);
+                DB.save_key_value_pair(context, "email", email);
+                DB.save_key_value_pair(context, "name", name);
+                DB.save_key_value_pair(context, "activated", activated);
+            }catch (NullPointerException e){
+                Log.e("IsbitMXNApi", e.toString() );
+            }
+
+
         }
     }
 
@@ -340,7 +372,7 @@ public class IsbitMXNApi extends AbstractMarketApi {
         JSONObject data = this.get_json(symbolPair);
         if (data.containsKey("asks")) {
             JSONObject jsonObject = this.format_depth(data);
-            convert_to_usd(jsonObject);
+           // convert_to_usd(jsonObject);
             return jsonObject;
         }
         throw new RuntimeException("update_depth error");
@@ -350,6 +382,7 @@ public class IsbitMXNApi extends AbstractMarketApi {
         String url = ISBIT_URL + "/api/v2/order_book?market=" + getSymbolPairDescFromUsd2Mxn(symbolPair) +
                 "&asks_limit=100&bids_limit=100";
 
+        Log.i("JSONObject get_json url",url);
         JSONObject data = new JSONObject();
         try {
             String jsonstr = this.parse_json_str(url);
@@ -397,6 +430,9 @@ public class IsbitMXNApi extends AbstractMarketApi {
             jsonArray1.add(jsonObject1);
 
         }
+
+        Log.d("sort_and_format array", jsonArray1.toString() );
+
         return jsonArray1;
     }
 

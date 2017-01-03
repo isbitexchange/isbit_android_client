@@ -65,9 +65,13 @@ public class DB extends SQLiteOpenHelper {
             return query_database_key( context, url_host);
     }
     public  static String query_url_schema(Context context){
-        return query_database_key(context,url_host);
+        return query_database_key(context,url_schema);
     }
 
+    public static  String get_isbit_url(Context context){
+        String isbit_url = query_url_schema(context)+"://"+query_url_host(context);
+        return isbit_url;
+    }
     public static String query_database_key(Context context,String key){
 
         String value = null;

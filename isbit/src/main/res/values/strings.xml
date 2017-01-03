@@ -21,13 +21,32 @@
     <string name="title_activity_tablero">BIT</string>
     <string name="title_activity_funds">Fondos</string>
 
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
+    <string name="title_section1">Fondos</string>
+    <string name="title_section2">Intercambiar</string>
+    <string name="title_section3">Depositar</string>
+    <string name="title_section4">Retirar</string>
+
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_example">Example action</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="qr_not_installed_warning">Es necesario instalar Lector de Códigos QR antes de continuar</string>
+    <string name="goto_googleplay_and_download">Obtener Escaner de Códigos QR</string>
+
+    <string name="cancel">Cancelar</string>
+    <string name="market_label">Mercado BTC/MXN</string>
+    <string name="comprar">Comprar</string>
+    <string name="vender">Vender</string>
+    <string name="mxn">MXN</string>
+    <string name="precio">Precio</string>
+    <string name="precio_ask">Precio</string>
+    <string name="bid_price_et_hint">0.0</string>
+    <string name="ask_price_et_hint">0.0</string>
+    <string name="cantidad">Cant.</string>
 
 </resources>

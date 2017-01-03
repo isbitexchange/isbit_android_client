@@ -1,5 +1,7 @@
 package org.bitcoin.market;
 
+import android.content.Context;
+
 import org.bitcoin.market.bean.Market;
 
 import java.util.LinkedHashMap;
@@ -8,11 +10,15 @@ import java.util.Map;
 /**
  * Created by Sebastian Acosta Checa on 14-2-26.
  */
+
 public class MarketApiFactory {
-    private static MarketApiFactory factory = new MarketApiFactory();
 
-    private MarketApiFactory() {
+    private Context context;
 
+    private static MarketApiFactory factory = new MarketApiFactory(null); //<--- null? wtf???
+
+    private MarketApiFactory(Context context) {
+        this.context = context;
     }
 
     public static MarketApiFactory getInstance() {
@@ -22,8 +28,8 @@ public class MarketApiFactory {
     static Map<String, AbstractMarketApi> marketMap = new LinkedHashMap<String, AbstractMarketApi>();
 
     static {
-        AbstractMarketApi isbit = new IsbitMXNApi();
-        marketMap.put(isbit.getMarket().name(), isbit);
+       // AbstractMarketApi isbit = new IsbitMXNApi(this.context);
+        //marketMap.put(isbit.getMarket().name(), isbit);
     }
 
 

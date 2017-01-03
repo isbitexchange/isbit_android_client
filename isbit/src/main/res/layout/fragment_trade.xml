@@ -1,0 +1,272 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    tools:context="com.isbit.movil.TradeFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+    <LinearLayout
+        android:id="@+id/orderbook"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ListView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:id="@+id/bid_orderbook_list"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <ListView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:id="@+id/ask_orderbook_list"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/price_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/orderbook"
+        android:paddingBottom="@dimen/bid_ask_params_padding"
+
+        >
+        <TextView
+            android:id="@+id/bid_price_tv"
+            android:layout_width="0dp"
+            android:layout_weight="90"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/orderbook_list"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:text="@string/precio"
+
+
+            />
+
+
+        <EditText
+            android:id="@+id/bid_price_et"
+            android:layout_width="0dp"
+            android:layout_weight="150"
+            android:textSize="@dimen/font_size_small"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/bid_price_tv"
+            android:layout_toStartOf="@+id/bid_price_tv"
+            android:layout_below="@+id/orderbook_list"
+            android:inputType="numberDecimal"
+            android:hint="@string/bid_price_et_hint"
+            />
+        <TextView
+            android:id="@+id/bid_currency"
+            android:layout_width="0dp"
+            android:layout_weight="80"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/orderbook_list"
+            android:layout_toLeftOf="@+id/bid_price_et"
+            android:layout_toStartOf="@+id/bid_price_et"
+            android:text="@string/mxn"
+            />
+
+
+
+
+        <TextView
+            android:id="@+id/ask_price_tv"
+            android:layout_width="0dp"
+            android:layout_weight="100"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/orderbook_list"
+            android:layout_toLeftOf="@+id/bid_currency"
+            android:layout_toStartOf="@+id/bid_currency"
+            android:text="@string/precio_ask" />
+
+        <EditText
+            android:id="@+id/ask_price_et"
+            android:layout_width="0dp"
+            android:layout_weight="150"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/font_size_small"
+
+            android:layout_below="@+id/orderbook_list"
+            android:layout_toLeftOf="@+id/ask_price_tv"
+            android:layout_toStartOf="@+id/ask_price_tv"
+            android:inputType="numberDecimal"
+            android:hint="@string/ask_price_et_hint"
+            />
+        <TextView
+            android:id="@+id/ask_currency"
+            android:layout_width="0dp"
+            android:layout_weight="80"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/orderbook_list"
+            android:layout_toLeftOf="@+id/ask_price_et"
+            android:layout_toStartOf="@+id/ask_price_et"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:text="@string/mxn"
+            />
+
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_below="@id/price_ll"
+        android:orientation="horizontal"
+        android:id="@+id/qty_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/bid_ask_params_padding"
+
+        >
+
+        <TextView
+            android:id="@+id/bid_qty_tv"
+            android:layout_width="0dp"
+            android:layout_weight="100"
+            android:layout_height="wrap_content"
+            android:text="@string/cantidad"/>
+
+        <EditText
+            android:id="@+id/bid_qty_et"
+            android:inputType="numberDecimal"
+            android:layout_width="0dp"
+            android:layout_weight="150"
+            android:hint="0.0"
+            android:textSize="@dimen/font_size_small"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="80"
+            android:layout_height="wrap_content"
+            android:hint="0.0"
+            android:id="@+id/bid_amount_currency"
+            android:text="BTC"
+            />
+
+        <TextView
+            android:id="@+id/ask_qty_tv"
+            android:layout_width="0dp"
+            android:layout_weight="100"
+            android:layout_height="wrap_content"
+            android:text="@string/cantidad"/>
+
+        <EditText
+            android:id="@+id/ask_qty_et"
+            android:inputType="numberDecimal"
+            android:layout_width="0dp"
+            android:hint="0.0"
+            android:textSize="@dimen/font_size_small"
+
+            android:layout_weight="150"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="80"
+            android:layout_height="wrap_content"
+            android:id="@+id/ask_amount_currency"
+            android:text="BTC"
+
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_below="@+id/qty_ll"
+        android:id="@+id/total_ll"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/bid_ask_params_padding"
+        android:paddingBottom="@dimen/bid_ask_params_padding"
+
+        >
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="100"
+            android:layout_height="wrap_content"
+            android:id="@+id/bid_total_tv"
+            android:text="Total"/>
+        <EditText
+            android:id="@+id/bid_total_et"
+            android:hint="0.0"
+            android:textSize="@dimen/font_size_small"
+
+            android:inputType="numberDecimal"
+            android:layout_width="0dp"
+            android:layout_weight="150"
+            android:layout_height="wrap_content"
+            />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="80"
+            android:layout_height="wrap_content"
+            android:id="@+id/bid_total_currency"
+            android:text="MXN"
+            />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="100"
+            android:layout_height="wrap_content"
+            android:id="@+id/ask_total_tv"
+            android:text="Total"/>
+        <EditText
+            android:id="@+id/ask_total_et"
+            android:hint="0.0"
+            android:layout_width="0dp"
+            android:layout_weight="150"
+            android:textSize="@dimen/font_size_small"
+
+            android:inputType="numberDecimal"
+            android:layout_height="wrap_content"
+            />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="80"
+            android:layout_height="wrap_content"
+            android:id="@+id/ask_total_currency"
+            android:text="MXN"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_below="@+id/total_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/bid_ask_params_padding"
+
+        >
+        <Button
+            android:layout_weight="1"
+            android:text="@string/comprar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/buy_button"
+            android:layout_below="@+id/bid_price_tv"
+            />
+        <Button
+            android:layout_weight="1"
+            android:text="@string/vender"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/sell_button"
+            android:layout_toLeftOf="@+id/buy_button"
+            android:layout_below="@+id/ask_price_tv"
+            />
+    </LinearLayout>
+</RelativeLayout>

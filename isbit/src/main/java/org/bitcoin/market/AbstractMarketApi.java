@@ -1,5 +1,7 @@
 package org.bitcoin.market;
 
+import android.content.Context;
+
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.bitcoin.common.FiatConverter;
@@ -26,11 +28,13 @@ public abstract class AbstractMarketApi {
     private static final long MARKET_EXPIRATION_TIME = 120L;
     private static final int MAX_DEPTH_LEN = 300;
 
+    protected Context context;
     Market market;
     long lastUpdate = 0L;
     long depth_updated = 10L;
 
-    public AbstractMarketApi(Currency currency, Market market) {
+    public AbstractMarketApi(Context context, Currency currency, Market market) {
+        this.context = context;
         this.currency = currency;
         this.market = market;
         this.init_depth();
@@ -156,6 +160,8 @@ public abstract class AbstractMarketApi {
 
     protected void convert_to_usd(JSONObject depth) {
 
+
+
         if (this.currency == Currency.USD) {
             return;
         }
@@ -168,6 +174,7 @@ public abstract class AbstractMarketApi {
             }
         }
     }
+
 
 
     public abstract JSONObject update_depth(SymbolPair symbol);

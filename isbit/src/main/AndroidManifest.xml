@@ -41,7 +41,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".FundsActivity"
+            android:name=".MainActivity"
             android:label="@string/title_activity_funds"></activity>
     </application>
 
