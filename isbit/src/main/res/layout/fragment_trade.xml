@@ -13,7 +13,7 @@
         android:id="@+id/orderbook"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="150sp">
 
         <ListView
             android:layout_weight="1"
@@ -244,12 +244,12 @@
             />
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/buttons_ll"
         android:orientation="horizontal"
         android:layout_below="@+id/total_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="@dimen/bid_ask_params_padding"
-
         >
         <Button
             android:layout_weight="1"
@@ -269,4 +269,23 @@
             android:layout_below="@+id/ask_price_tv"
             />
     </LinearLayout>
+    <LinearLayout
+        android:layout_below="@+id/buttons_ll"
+        android:layout_width="match_parent"
+        android:layout_height="150sp"
+        android:id="@+id/running_orders_sv"
+        android:orientation="vertical"
+
+
+        >
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/running_orders_lv"
+        >
+
+    </ListView>
+
+    </LinearLayout>
+
 </RelativeLayout>

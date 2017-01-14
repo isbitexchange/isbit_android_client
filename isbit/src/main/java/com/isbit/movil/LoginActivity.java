@@ -89,14 +89,16 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         TextView keys_status_tv =  (TextView)  findViewById(com.isbit.movil.R.id.keys_status_tv);
 
 
-       String access_key =  DB.query_access_key(LoginActivity.this);
-        String secret_key = DB.query_secret_key(LoginActivity.this);
+        DS ds = new DS(LoginActivity.this);
+       String access_key =  ds.query_access_key();
+        String secret_key = ds.query_secret_key();
+        ds.close();
 
 
 
 
 
-        keys_status_tv.setText("Clave acceso: "+DB.query_access_key(LoginActivity.this) + "\n Clave secreta: "+ secret_key);
+       // keys_status_tv.setText("Clave acceso: "+ com.isbit.movil.DS.query_access_key(LoginActivity.this) + "\n Clave secreta: "+ secret_key);
 
     }
 

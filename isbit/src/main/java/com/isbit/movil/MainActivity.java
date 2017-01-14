@@ -1,26 +1,12 @@
 package com.isbit.movil;
 
-import android.app.Activity;
-
 import android.app.ActionBar;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
-import android.widget.TextView;
 
-import org.bitcoin.market.IsbitMXNApi;
-import org.bitcoin.market.bean.AppAccount;
-import org.bitcoin.market.bean.Asset;
-
-public class MainActivity extends FragmentActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks, FundsFragment.OnFragmentInteractionListener, DepositFragment.OnFragmentInteractionListener, TradeFragment.OnFragmentInteractionListener {
+public class MainActivity extends FragmentActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks, FundsFragment.OnFragmentInteractionListener, DepositFragment.OnFragmentInteractionListener, TradeFragment.OnFragmentInteractionListener, SetActionbarInformation {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -66,6 +52,14 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
             case 3:
                 fragmentManager.beginTransaction().replace(R.id.container, DepositFragment.newInstance("","")).commit();
                 break;
+            case 4:
+                DS ds = new DS(MainActivity.this);
+                ds.open();
+                ds.erase();
+                ds.close();
+
+                finish();
+                break;
 
 
         }
@@ -83,6 +77,9 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
             case 3:
                 mTitle = getString(R.string.title_section3);
                 break;
+            case 4:
+                mTitle = "Salir";
+                break;
         }
     }
 
@@ -96,5 +93,16 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    @Override
+    public void setActionbarTitle(String tile) {
+        ActionBar ab = getActionBar();
+        ab.setTitle(tile);
+    }
+    @Override
+    public void setActionbarSubtitle(String subtitle) {
+        ActionBar ab = getActionBar();
+        ab.setSubtitle(subtitle);
     }
 }

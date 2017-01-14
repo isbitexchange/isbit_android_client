@@ -7,7 +7,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Throwables;
-import com.isbit.movil.DB;
+import com.isbit.movil.DS;
+import com.isbit.movil.ISO8601;
 
 import org.bitcoin.common.FiatConverter;
 import org.bitcoin.common.HttpUtils;
@@ -39,8 +40,12 @@ public class IsbitMXNApi extends AbstractMarketApi {
 
     public IsbitMXNApi(Context context) {
         super(context, org.bitcoin.market.bean.Currency.MXN, Market.IsbitMXN);
-        ISBIT_URL = DB.get_isbit_url(context);
-            }
+        DS ds = new DS(context);
+        ds.open();
+        ISBIT_URL = ds.get_isbit_url();
+        ds.close();
+
+    }
 
     @Override
     Long createNonce() {
@@ -211,6 +216,7 @@ public class IsbitMXNApi extends AbstractMarketApi {
         params.put("limit", "100");
         List<BitOrder> orders = new ArrayList<BitOrder>();
         JSONArray ordersResponse = send_requests(appAccount, params, TIME_OUT, true);
+        Log.d("getRunningOrders()", ordersResponse.toString());
         for (Object anOrdersResponse : ordersResponse) {
             JSONObject orderResponse = (JSONObject) anOrdersResponse;
             orders.add(getOrder(orderResponse));
@@ -219,7 +225,25 @@ public class IsbitMXNApi extends AbstractMarketApi {
 
     }
 
+
+    @Override
+    public JSONObject getDepositAddress(AppAccount appAccount,Symbol currency) {
+        TreeMap<String, String> params = new TreeMap<String, String>();
+        params.put("canonical_verb", "GET");
+        params.put("canonical_uri", "/api/v2/deposit_address.json");
+        params.put("currency",currency.toString());
+
+        JSONObject resp = send_request(appAccount, params, TIME_OUT, true);
+        Log.d("getDepositAddress()", resp.toString());
+
+
+        String addr = "address goes here";
+        return resp;
+
+    }
+
     private BitOrder getOrder(JSONObject jsonObject) {
+
         BitOrder bitOrder = new BitOrder();
         bitOrder.setOrderId(jsonObject.getLong("id"));
         bitOrder.setOrderAmount(jsonObject.getDouble("volume"));
@@ -228,6 +252,36 @@ public class IsbitMXNApi extends AbstractMarketApi {
         bitOrder.setProcessedAmount(jsonObject.getDouble("executed_volume"));
         bitOrder.setProcessedMxnPrice(jsonObject.getDouble("avg_price"));
         bitOrder.setProcessedPrice(FiatConverter.toUsd(jsonObject.getDouble("avg_price")));
+
+        // 	"created_at": "2017-01-02T15:41:25-06:00",
+
+       // DateTimeFormatter formatter = ISODateTimeFormat.ordinalDate();
+        //        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+      //  DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+//          LocalDateTime ps = formatter.parseLocalDateTime(jsonObject.getString("created_at"));
+
+
+        try {
+            Calendar cal = ISO8601.toCalendar(jsonObject.getString("created_at"));
+            Date dt = cal.getTime();
+             bitOrder.setCreateTime(dt);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+            Log.e("IsbitMXNApi",e.toString());
+        }
+
+
+
+
+
+
+        if ("sell".equals(jsonObject.getString("side"))) {
+            bitOrder.setOrderSide(OrderSide.buy.sell);
+        }else{
+            bitOrder.setOrderSide(OrderSide.buy.buy);
+        }
+
         bitOrder.setFee(getTransactionFee());
         String orderStatusStr = jsonObject.getString("state");
         OrderStatus orderStatus = OrderStatus.none;
@@ -312,20 +366,21 @@ public class IsbitMXNApi extends AbstractMarketApi {
             throw Throwables.propagate(e);
         } finally {
             LOG.info("send_request result:{}", response);
-
-            com.alibaba.fastjson.JSONObject  json_resp = com.alibaba.fastjson.JSONObject.parseObject(response);
-
             try {
-
+                DS ds = new DS(context);
+                ds.open();
+                com.alibaba.fastjson.JSONObject  json_resp = com.alibaba.fastjson.JSONObject.parseObject(response);
                 String sn = json_resp.getString("sn");
                 String email = json_resp.getString("email");
                 String name = json_resp.getString("name");
                 String activated = json_resp.getBoolean("activated").toString();
-                DB.save_key_value_pair(context, "sn", sn);
-                DB.save_key_value_pair(context, "email", email);
-                DB.save_key_value_pair(context, "name", name);
-                DB.save_key_value_pair(context, "activated", activated);
-            }catch (NullPointerException e){
+                ds.save_key_value_pair( "sn", sn);
+                ds.save_key_value_pair( "email", email);
+                ds.save_key_value_pair( "name", name);
+                ds.save_key_value_pair( "activated", activated);
+                ds.close();
+
+            }catch (Exception e){
                 Log.e("IsbitMXNApi", e.toString() );
             }
 

@@ -1,7 +1,8 @@
 package com.isbit.movil;
 
 import android.app.Activity;
-import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,13 +10,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import org.bitcoin.market.IsbitMXNApi;
 import org.bitcoin.market.bean.AppAccount;
 import org.bitcoin.market.bean.Symbol;
-import org.bitcoin.market.bean.SymbolPair;
 
 
 /**
@@ -74,7 +81,63 @@ public class DepositFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final  View rootView =  inflater.inflate(R.layout.fragment_deposit, container, false);
-        final Context context = getActivity();
+        final Activity activity = getActivity();
+
+        final ImageView qriv = (ImageView) rootView.findViewById(R.id.qrImageView);
+        final TextView addr_tv = (TextView) rootView.findViewById(R.id.addr);
+
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                IsbitMXNApi api = new IsbitMXNApi(rootView.getContext());
+                AppAccount appAccount = new AppAccount();
+                DS ds = new DS(activity);
+                ds.open();
+                appAccount.setSecretKey(ds.query_secret_key());
+                appAccount.setAccessKey(ds.query_access_key());
+                ds.close();
+                final JSONObject resp = api.getDepositAddress(appAccount,Symbol.btc);
+                final String address = resp.getString("address");
+
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+                        try {
+                            BitMatrix bitMatrix = multiFormatWriter.encode(address, BarcodeFormat.QR_CODE,200,200);
+                            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+                            Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+                            qriv.setImageBitmap(bitmap);
+
+                            addr_tv.setText(address);
+
+                            qriv.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    String shareBody = ""+address;
+                                    Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                                    sharingIntent.setType("text/plain");
+                                    sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "DIRECCION DEPOSITO");
+                                    sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                                    startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.share_using)));
+                                }
+                            });
+
+
+                        }catch (WriterException e){
+                            e.printStackTrace();
+                            Log.e("DepositFragment",e.toString());
+                        }
+                    }
+                });
+
+            }
+        }).start();
+
+
+
+
 
 
 

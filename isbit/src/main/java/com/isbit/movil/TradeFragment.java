@@ -1,41 +1,38 @@
 package com.isbit.movil;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.ListActivity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.serializer.StringCodec;
 
 import org.bitcoin.market.IsbitMXNApi;
 import org.bitcoin.market.bean.AppAccount;
+import org.bitcoin.market.bean.BitOrder;
 import org.bitcoin.market.bean.OrderType;
 import org.bitcoin.market.bean.Symbol;
 import org.bitcoin.market.bean.SymbolPair;
 import org.bitcoin.market.utils.TradeException;
-import org.json.JSONArray;
-import org.json.JSONException;
 
 import java.util.ArrayList;
-
+import java.util.Collections;
+import java.util.List;
 
 
 /**
@@ -46,18 +43,22 @@ import java.util.ArrayList;
  * Use the {@link TradeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TradeFragment extends Fragment {
+public class TradeFragment extends Fragment implements RefreshOrdersInformation {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private static final String TAG = "TradeFragment";
 
+    private IntentFilter intentFilter;
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    private View rootView;
+    private ChangesReceiver changesReceiver;
 
     public TradeFragment() {
         // Required empty public constructor
@@ -88,23 +89,56 @@ public class TradeFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        intentFilter = new IntentFilter();
+        intentFilter.addAction(RealTimeMarketData.ACTION_ORDERBOOK_CHANGED);
+         changesReceiver = new ChangesReceiver();
+        //getActivity().registerReceiver( changesReceiver,intentFilter);
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        getActivity().registerReceiver(changesReceiver,intentFilter);
+
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        try {
+            getActivity().unregisterReceiver(changesReceiver);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    @Override
+    public void onStop(){
+        super.onStop();
+        try {
+            getActivity().unregisterReceiver(changesReceiver);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        final View rootView = inflater.inflate(R.layout.fragment_trade, container, false);
-        final  Activity context = getActivity();
+      rootView = inflater.inflate(R.layout.fragment_trade, container, false);
+        final  SetActionbarInformation activity = (SetActionbarInformation) getActivity();
 
-       initTradeControl(rootView,true);
-
-        initTradeControl(rootView,false);
-
+        initTradeControl(true); //<----- THIS INITS A CONTROL FOR ASK ORDERS (SECOND PARAM TRUE)
+        initTradeControl(false);  //<----- THIS INITS A CONTROL FOR  BID ORDERS (SECOND PARAMETER FALSE)
 
 
+        refresh();
 
-        loadOrderBook(rootView);
+        activity.setActionbarTitle("ISBIT BTC/MXN");
+        getActivity().registerReceiver( changesReceiver,intentFilter);
+
 
         return  rootView;
     }
@@ -144,14 +178,18 @@ public class TradeFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
 
-    private void loadOrderBook(final View rootView){
+    private void loadOrderBook(){
         new Thread(new Runnable() {
             @Override
             public void run() {
                 final AppAccount app_account =  new AppAccount();
-                app_account.setAccessKey(DB.query_access_key(getActivity()));
-                app_account.setSecretKey(DB.query_secret_key(getActivity()));
-                //IsbitMXNApi api = new  IsbitMXNApi(DB.query_url_schema(rootView.getContext())+"://"+DB.query_url_host(rootView.getContext()));
+                DS ds = new DS(getActivity());
+                ds.open();
+                app_account.setAccessKey(ds.query_access_key());
+                app_account.setSecretKey(ds.query_secret_key());
+                ds.close();
+
+                //IsbitMXNApi api = new  IsbitMXNApi(DS.query_url_schema(rootView.getContext())+"://"+DS.query_url_host(rootView.getContext()));
                 IsbitMXNApi api = new  IsbitMXNApi(getActivity());
 
                 JSONObject depth = api.get_depth(new SymbolPair(Symbol.btc, Symbol.mxn), false);
@@ -212,7 +250,50 @@ public class TradeFragment extends Fragment {
         }).start();
     }
 
-    private void initTradeControl(final View rootView, final boolean is_ask){
+    private void loadRunningOrders(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final AppAccount app_account =  new AppAccount();
+                DS ds = new DS(getActivity());
+                ds.open();
+                app_account.setAccessKey(ds.query_access_key());
+                app_account.setSecretKey(ds.query_secret_key());
+                ds.close();
+
+                //IsbitMXNApi api = new  IsbitMXNApi(DS.query_url_schema(rootView.getContext())+"://"+DS.query_url_host(rootView.getContext()));
+                IsbitMXNApi api = new  IsbitMXNApi(getActivity());
+
+                final List<BitOrder> running_orders = api.getRunningOrders(app_account);
+                 Collections.reverse(running_orders);
+
+                Log.i("loadRunningOrders",running_orders.toString());
+
+                rootView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        final ListView list = (ListView) getActivity().findViewById(R.id.running_orders_lv);
+
+                        final RunningOrdersArrayAdapter bid_list_adapter = new RunningOrdersArrayAdapter(getActivity(),
+                                android.R.layout.simple_list_item_1, running_orders);
+                        list.setAdapter(bid_list_adapter);
+
+                        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                               BitOrder itm = (BitOrder) list.getItemAtPosition(position);
+                                displayCancelOrderDialog(itm);
+                            }
+                        });
+
+
+                    }
+                });
+            }
+        }).start();
+    }
+
+    private void initTradeControl( final boolean is_ask){
         // --------------- STARt SELL  or BUY ORDERS CONTROLS
 
         Button trade_button;
@@ -338,8 +419,12 @@ public class TradeFragment extends Fragment {
                                 @Override
                                 public void run() {
                                     final AppAccount app_account = new AppAccount();
-                                    app_account.setAccessKey(DB.query_access_key(getActivity()));
-                                    app_account.setSecretKey(DB.query_secret_key(getActivity()));
+                                    DS ds = new DS(getActivity());
+                                    ds.open();
+                                    app_account.setAccessKey(ds.query_access_key());
+                                    app_account.setSecretKey(ds.query_secret_key());
+                                    ds.close();
+
                                     IsbitMXNApi api = new IsbitMXNApi(getActivity());
                                     try {
                                         if(is_ask) {
@@ -351,7 +436,7 @@ public class TradeFragment extends Fragment {
                                                         AlertDialogFragment dlg = new AlertDialogFragment();
                                                         dlg.setMsg("La Orden de Venta fue colocada exitosamente. #Folio " + id);
                                                         dlg.show(getActivity().getSupportFragmentManager(), "ask_order_placed_success_dlg");
-                                                        loadOrderBook(rootView);
+                                                    refresh();
                                                     } else {
                                                         //order placement failed
                                                     }
@@ -366,7 +451,7 @@ public class TradeFragment extends Fragment {
                                                         AlertDialogFragment dlg = new AlertDialogFragment();
                                                         dlg.setMsg("La Orden de Compra fue colocada exitosamente. #Folio " + id);
                                                         dlg.show(getActivity().getSupportFragmentManager(), "bid_order_placed_success_dlg");
-                                                        loadOrderBook(rootView);
+                                                     refresh();
                                                     } else {
                                                         //order placement failed
                                                     }
@@ -379,7 +464,9 @@ public class TradeFragment extends Fragment {
                                         AlertDialogFragment dlg = new AlertDialogFragment();
                                         dlg.setMsg("FRACASO en  colocación de Orden. Código "+te.getCode());
                                         dlg.show(getActivity().getSupportFragmentManager(), "order_failure_dlg");
-                                        loadOrderBook(rootView);
+
+                                        refresh();
+
                                     }
 
                                 }
@@ -399,8 +486,28 @@ public class TradeFragment extends Fragment {
         //------------END SELL ORDERS CONTROLS
     }
 
+
+    private void displayCancelOrderDialog(BitOrder itm){
+
+        CancelOrderDialogFragment dlg = new CancelOrderDialogFragment();
+        dlg.setOrder(itm);
+        dlg.show(getActivity().getSupportFragmentManager(),"cancel_order_dlg");
+    }
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public void refresh(){
+        loadOrderBook();
+        loadRunningOrders();
+    }
+
+    public class ChangesReceiver extends BroadcastReceiver{
+        @Override
+        public void onReceive(Context context, Intent i){
+        refresh();
+        }
     }
 }

@@ -13,4 +13,8 @@
 
     <dimen name="bid_ask_params_padding">6sp</dimen>
 
+    <dimen name="font_size_instructions_num">30sp</dimen>
+    <dimen name="font_size_instructions_header">25sp</dimen>
+    <dimen name="font_size_instructions_desc">18sp</dimen>
+
 </resources>

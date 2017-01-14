@@ -29,6 +29,8 @@ import javax.crypto.Mac;
 public class RealTimeMarketData extends Activity {
 
 
+    public static final String ACTION_ORDERBOOK_CHANGED = "ACTION_ORDERBOOK_CHANGED" ;
+    public static final String EXTRA_PAYLOAD_STRING = "EXTRA_PAYLOAD_STRING";
 
     private WebSocketClient mWebSocketClient;
 
@@ -87,7 +89,11 @@ public class RealTimeMarketData extends Activity {
         URI uri;
         try {
 
-            String host = DB.query_url_host(RealTimeMarketData.this);
+            DS ds = new DS(RealTimeMarketData.this);
+            ds.open();
+            String host = ds.query_url_host();
+            ds.close();
+
             uri = new URI("ws://"+host+":8080");
         } catch (URISyntaxException e) {
             e.printStackTrace();
@@ -118,8 +124,11 @@ public class RealTimeMarketData extends Activity {
 
 
 
-                            String access_key = DB.query_access_key(RealTimeMarketData.this);
-                            String private_key = DB.query_secret_key(RealTimeMarketData.this);
+                            DS ds = new DS(RealTimeMarketData.this);
+                            ds.open();
+                            String access_key = ds.query_access_key();
+                            String private_key = ds.query_secret_key();
+                            ds.close();
 
                             String payload = access_key + challenge;
                             textView.setText(textView.getText() + "\n challenge = " + challenge + "\n");

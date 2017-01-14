@@ -40,6 +40,10 @@ public abstract class AbstractMarketApi {
         this.init_depth();
     }
 
+    JSONObject getDepositAddress(AppAccount appAccount,Symbol currency){
+        return  getDepositAddress( appAccount, currency);
+    }
+
     public Long buy(AppAccount appAccount, double amount, double price, SymbolPair symbolPair) {
         return buy(appAccount, amount, price, symbolPair, OrderType.Limit);
     }

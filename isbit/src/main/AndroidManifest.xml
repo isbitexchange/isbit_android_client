@@ -42,7 +42,17 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_funds"></activity>
+            android:label="ISBIT">
+
+        </activity>
+        <activity android:name=".ToolbarCaptureActivity"
+            android:label="ESCANEAR QR"
+            android:theme="@style/Theme.AppCompat.Light"
+            >
+
+        </activity>
+
+
     </application>
 
 </manifest>

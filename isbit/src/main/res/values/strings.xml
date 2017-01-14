@@ -24,7 +24,7 @@
     <string name="title_section1">Fondos</string>
     <string name="title_section2">Intercambiar</string>
     <string name="title_section3">Depositar</string>
-    <string name="title_section4">Retirar</string>
+    <string name="title_section4">Salir (Borrar Token)</string>
 
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -48,5 +48,6 @@
     <string name="bid_price_et_hint">0.0</string>
     <string name="ask_price_et_hint">0.0</string>
     <string name="cantidad">Cant.</string>
+    <string name="share_using" >Compartir via</string>
 
 </resources>
