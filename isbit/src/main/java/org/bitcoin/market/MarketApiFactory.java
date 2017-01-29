@@ -15,10 +15,11 @@ public class MarketApiFactory {
 
     private Context context;
 
-    private static MarketApiFactory factory = new MarketApiFactory(null); //<--- null? wtf???
+    private static MarketApiFactory factory = new MarketApiFactory(); //<--- null? wtf???
 
-    private MarketApiFactory(Context context) {
-        this.context = context;
+    private MarketApiFactory() {
+
+       // this.context = context;
     }
 
     public static MarketApiFactory getInstance() {

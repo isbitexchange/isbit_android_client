@@ -49,5 +49,27 @@
     <string name="ask_price_et_hint">0.0</string>
     <string name="cantidad">Cant.</string>
     <string name="share_using" >Compartir via</string>
+    <string name="qr_cont_desc_deposit_address">Dirección de Depósito</string>
+    <string name="logo_mxn">Logo MXN</string>
+    <string name="logo_btc">Logo BTC</string>
+    <string name="fondos_congelados">Fondos Congelados</string>
+    <string name="num_step_1">1.</string>
+    <string name="heading_step_1">Ingresa al Portal</string>
+    <string name="description_step_1">Desde una computadora de escritorio ingresa al portal web de ISBIT.</string>
+    <string name="num_step_2">2.</string>
+    <string name="heading_step_2">Crear Token</string>
+    <string name="description_step_2">Desde la configuración de perfil de tu cuenta, selecciona Crear Token. Necesitarás tener la Vertificación de Dos Pasos Activada.</string>
+    <string name="num_step_3">3.</string>
+    <string name="heading_step_3">Escanear Código QR</string>
+    <string name="description_step_3">Escanea el Código QR que se te mostrará después de crear el Token con éxito en el portal de ISBIT.</string>
+    <string name="escanear_qr_para_ingresar">ESCANEAR QR PARA INGRESAR</string>
+    <string name="direcci_n_para_depositar_btc">Dirección para depositar BTC</string>
+    <string name="obteniendo_direcci_n_para_depositar">Obteniendo dirección para depositar...</string>
+    <string name="btc">BTC</string>
+    <string name="mensaje">Mensaje</string>
+    <string name="enviar">Enviar</string>
+    <string name="_0_0">0.0</string>
+    <string name="total">Total</string>
+    <string name="member_is_active">"Activo? "</string>
 
 </resources>

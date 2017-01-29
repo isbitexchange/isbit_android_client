@@ -1,38 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.isbit.movil"
-    android:versionCode="1"
-    android:versionName="1.0">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.isbit.m"
+    android:versionCode="2"
+    android:versionName="2.0">
 
     <uses-sdk
         android:minSdkVersion="14"
-        android:targetSdkVersion="19" />
+        android:targetSdkVersion="25"
+        tools:ignore="GradleOverrides" />
 
     <uses-permission android:name="android.permission.INTERNET" />
-
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-
-    <android:uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <android:uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <android:uses-permission android:name="android.permission.READ_CALL_LOG" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:supportsRtl="false"
+
+
+        >
         <activity
-            android:name=".RealTimeMarketData"
+            android:name="com.isbit.m.RealTimeMarketData"
             android:label="@string/app_name"></activity>
         <activity
-            android:name=".LoginActivity"
-            android:label="@string/title_activity_login" />
-        <activity
-            android:name=".Tablero"
+            android:name="com.isbit.m.Tablero"
             android:label="@string/title_activity_tablero">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,11 +42,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name="com.isbit.m.MainActivity"
             android:label="ISBIT">
 
         </activity>
-        <activity android:name=".ToolbarCaptureActivity"
+        <activity android:name="com.isbit.m.ToolbarCaptureActivity"
             android:label="ESCANEAR QR"
             android:theme="@style/Theme.AppCompat.Light"
             >

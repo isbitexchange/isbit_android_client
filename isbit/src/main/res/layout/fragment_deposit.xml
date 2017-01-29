@@ -3,21 +3,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10sp"
-    tools:context="com.isbit.movil.DepositFragment">
+    tools:context="com.isbit.m.DepositFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:id="@+id/addr_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Direccion para depositar BTC"
+        android:text="@string/direcci_n_para_depositar_btc"
         android:layout_centerHorizontal="true"/>
     <TextView
         android:id="@+id/addr"
         android:layout_below="@+id/addr_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="xxxxxxxxxxxxxxxx"
+        android:text="@string/obteniendo_direcci_n_para_depositar"
 
         android:layout_centerHorizontal="true"/>
     <ImageView
@@ -27,8 +27,7 @@
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-
-
+        android:contentDescription="@string/qr_cont_desc_deposit_address"
         />
 
 </RelativeLayout>

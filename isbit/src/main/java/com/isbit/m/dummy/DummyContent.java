@@ -1,4 +1,4 @@
-package com.isbit.movil.dummy;
+package com.isbit.m.dummy;
 
 import java.util.ArrayList;
 import java.util.HashMap;

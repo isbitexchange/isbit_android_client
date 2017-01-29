@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.isbit.movil.Tablero">
+    tools:context="com.isbit.m.Tablero">
 
     <RelativeLayout
         android:id="@+id/instructions"
@@ -18,7 +18,7 @@
             android:id="@+id/num_step_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1."
+            android:text="@string/num_step_1"
             android:textColor="@color/instructions_num"
             android:textSize="@dimen/font_size_instructions_num"
             android:textStyle="normal|italic" />
@@ -30,8 +30,9 @@
             android:layout_above="@+id/description_step_1"
             android:layout_alignBaseline="@+id/num_step_1"
             android:layout_toRightOf="@+id/num_step_1"
+            android:layout_toEndOf="@+id/num_step_1"
             android:textColor="@color/instructions_heading"
-            android:text="Ingresa al Portal"
+            android:text="@string/heading_step_1"
             android:textSize="@dimen/font_size_instructions_header"
             />
         <TextView
@@ -39,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/num_step_1"
-            android:text="Desde una computadora de escritorio ingresa al portal web de ISBIT. "
+            android:text="@string/description_step_1"
             android:textColor="@color/instructions_desc"
             android:textSize="@dimen/font_size_instructions_desc" />
 
@@ -48,7 +49,7 @@
             android:id="@+id/num_step_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2."
+            android:text="@string/num_step_2"
             android:layout_below="@+id/description_step_1"
             android:textColor="@color/instructions_num"
             android:textSize="@dimen/font_size_instructions_num"
@@ -61,8 +62,9 @@
             android:layout_above="@+id/description_step_2"
             android:layout_alignBaseline="@+id/num_step_2"
             android:layout_toRightOf="@+id/num_step_1"
+            android:layout_toEndOf="@+id/num_step_1"
             android:textColor="@color/instructions_heading"
-            android:text="Crear Token"
+            android:text="@string/heading_step_2"
             android:textSize="@dimen/font_size_instructions_header"
             />
         <TextView
@@ -70,7 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/num_step_2"
-            android:text="Desde la configuración de perfil de tu cuenta, selecciona Crear Token. Necesitarás tener la Vertificación de Dos Pasos Activada."
+            android:text="@string/description_step_2"
             android:textColor="@color/instructions_desc"
             android:textSize="@dimen/font_size_instructions_desc" />
 
@@ -78,7 +80,7 @@
             android:id="@+id/num_step_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="3."
+            android:text="@string/num_step_3"
             android:layout_below="@+id/description_step_2"
             android:textColor="@color/instructions_num"
             android:textSize="@dimen/font_size_instructions_num"
@@ -91,8 +93,9 @@
             android:layout_above="@+id/description_step_3"
             android:layout_alignBaseline="@+id/num_step_3"
             android:layout_toRightOf="@+id/num_step_2"
+            android:layout_toEndOf="@+id/num_step_2"
             android:textColor="@color/instructions_heading"
-            android:text="Escanear Código QR"
+            android:text="@string/heading_step_3"
             android:textSize="@dimen/font_size_instructions_header"
             />
         <TextView
@@ -100,7 +103,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/num_step_3"
-            android:text="Escanea el Código QR que se te mostrará después de crear el Token con éxito en el portal de ISBIT. "
+            android:text="@string/description_step_3"
             android:textColor="@color/instructions_desc"
             android:textSize="@dimen/font_size_instructions_desc" />
 
@@ -124,7 +127,7 @@
         android:layout_centerHorizontal="true"
         android:padding="20sp"
         android:textColor="@color/button_scan_token_qr"
-        android:text="ESCANEAR QR PARA INGRESAR" />
+        android:text="@string/escanear_qr_para_ingresar" />
 
 
 </RelativeLayout>

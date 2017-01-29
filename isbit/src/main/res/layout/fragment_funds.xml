@@ -50,8 +50,9 @@
                 android:background="@mipmap/ic_mxn"
                 android:layout_width="40sp"
                 android:layout_height="40sp"
-             android:layout_marginRight="25sp"
+                android:layout_marginRight="25sp"
                 android:layout_marginEnd="25sp"
+                android:contentDescription="@string/logo_mxn"
 
 
                 />
@@ -61,14 +62,17 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/logo_mxn"
                 android:textSize="@dimen/font_size_medium"
-                android:text="MXN" />
+                android:text="@string/mxn" />
 
             <TextView
                 android:id="@+id/available_mxn_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/font_size_large"
-                android:layout_toRightOf="@+id/logo_mxn"/>
+                android:layout_toRightOf="@+id/logo_mxn"
+                android:layout_toEndOf="@+id/logo_mxn"
+
+                />
 
             <ImageView
                 android:id="@+id/mxn_padlock"
@@ -76,8 +80,12 @@
                 android:layout_width="24sp"
                 android:layout_height="24sp"
                 android:layout_toRightOf="@+id/symbol_mxn"
+                android:layout_toEndOf="@+id/symbol_mxn"
                 android:layout_below="@+id/available_mxn_label"
                 android:layout_alignLeft="@+id/available_mxn_label"
+                android:layout_alignStart="@+id/available_mxn_label"
+                android:contentDescription="@string/fondos_congelados"
+
                 />
 
             <TextView
@@ -87,6 +95,7 @@
                 android:layout_toRightOf="@+id/mxn_padlock"
                 android:layout_below="@+id/available_mxn_label"
                 android:textSize="@dimen/font_size_medium"
+                android:layout_toEndOf="@+id/mxn_padlock"
 
 
                 />
@@ -107,8 +116,11 @@
                 android:layout_height="40sp"
                 android:paddingRight="60sp"
                 android:paddingEnd="60sp"
+                android:paddingLeft="0sp"
+                android:paddingStart="0sp"
                 android:layout_marginRight="25sp"
                 android:layout_marginEnd="25sp"
+                android:contentDescription="@string/logo_btc"
                 />
             <TextView
                 android:id="@+id/symbol_btc"
@@ -116,7 +128,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/logo_btc"
                 android:textSize="@dimen/font_size_medium"
-                android:text="BTC" />
+                android:text="@string/btc" />
 
             <TextView
                 android:id="@+id/available_btc_label"
@@ -124,6 +136,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/font_size_large"
                 android:layout_toRightOf="@+id/logo_btc"
+                android:layout_toEndOf="@+id/logo_btc"
                 />
 
             <ImageView
@@ -132,8 +145,11 @@
                 android:layout_width="24sp"
                 android:layout_height="24sp"
                 android:layout_toRightOf="@+id/symbol_btc"
+                android:layout_toEndOf="@+id/symbol_btc"
                 android:layout_below="@+id/available_btc_label"
                 android:layout_alignLeft="@+id/available_btc_label"
+                android:layout_alignStart="@+id/available_btc_label"
+                android:contentDescription="@string/fondos_congelados"
                 />
 
             <TextView
@@ -142,6 +158,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/available_btc_label"
                 android:layout_toRightOf="@+id/btc_padlock"
+                android:layout_toEndOf="@+id/btc_padlock"
                 android:textSize="@dimen/font_size_medium"
 
                 />
