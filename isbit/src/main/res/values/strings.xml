@@ -52,6 +52,7 @@
     <string name="qr_cont_desc_deposit_address">Dirección de Depósito</string>
     <string name="logo_mxn">Logo MXN</string>
     <string name="logo_btc">Logo BTC</string>
+    <string name="logo_ltc">Logo LTC</string>
     <string name="fondos_congelados">Fondos Congelados</string>
     <string name="num_step_1">1.</string>
     <string name="heading_step_1">Ingresa al Portal</string>
@@ -66,6 +67,7 @@
     <string name="direcci_n_para_depositar_btc">Dirección para depositar BTC</string>
     <string name="obteniendo_direcci_n_para_depositar">Obteniendo dirección para depositar...</string>
     <string name="btc">BTC</string>
+    <string name="ltc">LTC</string>
     <string name="mensaje">Mensaje</string>
     <string name="enviar">Enviar</string>
     <string name="_0_0">0.0</string>

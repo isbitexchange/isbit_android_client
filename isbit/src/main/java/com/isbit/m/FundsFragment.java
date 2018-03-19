@@ -90,8 +90,6 @@ public class FundsFragment extends Fragment {
 
         displayMarketSummary(); //always call fidplaymarket summary after displayFunds.  we need end point url. we have this url in db only once  diaplyFunds finishes
 
-
-
         return rootView;
     }
 
@@ -241,6 +239,8 @@ public class FundsFragment extends Fragment {
                         TextView frozen_btc_label =    (TextView)  rootView.findViewById(R.id.frozen_btc_label);
                         TextView available_mxn_label = (TextView)  rootView.findViewById(R.id.available_mxn_label);
                         TextView frozen_mxn_label = (TextView)    rootView.findViewById(R.id.frozen_mxn_label);
+                        TextView available_ltc_label = (TextView)  rootView.findViewById(R.id.available_ltc_label);
+                        TextView frozen_ltc_label = (TextView)    rootView.findViewById(R.id.frozen_ltc_label);
                         TextView name = (TextView) rootView.findViewById(R.id.name);
                         TextView sn = (TextView) rootView.findViewById(R.id.sn);
                         TextView activated = (TextView) rootView.findViewById(R.id.activated);
@@ -254,6 +254,8 @@ public class FundsFragment extends Fragment {
                         frozen_btc_label.setText(String.format(Locale.getDefault(),"%.8f",asset.getFrozenBtc()));
                         available_mxn_label.setText(String.format(Locale.getDefault(),"%.8f",asset.getAvailableMxn()));
                         frozen_mxn_label.setText(String.format(Locale.getDefault(),"%.8f",asset.getFrozenMxn()));
+                        available_ltc_label.setText(String.format(Locale.getDefault(),"%.8f",asset.getAvailableLtc()));
+                        frozen_ltc_label.setText(String.format(Locale.getDefault(),"%.8f",asset.getFrozenLtc()));
 
                         String email_str = ds.query_database_key("email");
                         String sn_str = ds.query_database_key("sn");
