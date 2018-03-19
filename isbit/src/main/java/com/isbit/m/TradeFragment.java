@@ -35,6 +35,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
+import android.os.*;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,6 +61,13 @@ public class TradeFragment extends Fragment implements RefreshOrdersInformation 
     private OnFragmentInteractionListener mListener;
     private View rootView;
     private ChangesReceiver changesReceiver;
+
+    //Handler
+    Handler h = new Handler();
+
+    //Seconds pased to reload the trading content
+    int delay = 5*1000; //1 second=1000 milisecond
+    Runnable runnable;
 
     public TradeFragment() {
         // Required empty public constructor
@@ -99,6 +107,17 @@ public class TradeFragment extends Fragment implements RefreshOrdersInformation 
 
     @Override
     public void onResume(){
+        loadOrderBook();
+        h.postDelayed(new Runnable() {
+            public void run() {
+                //Load the order book
+                loadOrderBook();
+
+                runnable=this;
+
+                h.postDelayed(runnable, delay);
+            }
+        }, delay);
         super.onResume();
         getActivity().registerReceiver(changesReceiver,intentFilter);
 
@@ -106,6 +125,7 @@ public class TradeFragment extends Fragment implements RefreshOrdersInformation 
 
     @Override
     public void onPause(){
+        h.removeCallbacks(runnable); //stop handler when activity not visible
         super.onPause();
         try {
             getActivity().unregisterReceiver(changesReceiver);

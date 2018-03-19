@@ -164,6 +164,68 @@
                 />
         </RelativeLayout>
 
+        <RelativeLayout
+            android:orientation="horizontal"
+            android:id="@+id/ltc_balance_ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="8sp"
+            >
+            <ImageView
+                android:id="@+id/logo_ltc"
+                android:background="@drawable/ic_litecoin_logo"
+                android:layout_width="40sp"
+                android:layout_height="40sp"
+                android:paddingRight="60sp"
+                android:paddingEnd="60sp"
+                android:paddingLeft="0sp"
+                android:paddingStart="0sp"
+                android:layout_marginRight="25sp"
+                android:layout_marginEnd="25sp"
+                android:contentDescription="@string/logo_ltc"
+                />
+            <TextView
+                android:id="@+id/symbol_ltc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/logo_ltc"
+                android:textSize="@dimen/font_size_medium"
+                android:text="@string/ltc" />
+
+            <TextView
+                android:id="@+id/available_ltc_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/font_size_large"
+                android:layout_toRightOf="@+id/logo_ltc"
+                android:layout_toEndOf="@+id/logo_ltc"
+                />
+
+            <ImageView
+                android:id="@+id/ltc_padlock"
+                android:background="@drawable/ic_padlock"
+                android:layout_width="24sp"
+                android:layout_height="24sp"
+                android:layout_toRightOf="@+id/symbol_ltc"
+                android:layout_toEndOf="@+id/symbol_ltc"
+                android:layout_below="@+id/available_ltc_label"
+                android:layout_alignLeft="@+id/available_ltc_label"
+                android:layout_alignStart="@+id/available_ltc_label"
+                android:contentDescription="@string/fondos_congelados"
+                />
+
+            <TextView
+                android:id="@+id/frozen_ltc_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/available_ltc_label"
+                android:layout_toRightOf="@+id/ltc_padlock"
+                android:layout_toEndOf="@+id/ltc_padlock"
+                android:textSize="@dimen/font_size_medium"
+
+                />
+        </RelativeLayout>
+
 
 
 

@@ -27,6 +27,8 @@ import java.net.URL;
 import java.util.Date;
 import java.util.Locale;
 
+import android.os.*;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -48,6 +50,13 @@ public class FundsFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    //Handler
+    Handler h = new Handler();
+
+    //Seconds pased to reload the trading content
+    int delay = 5*1000; //1 second=1000 milisecond
+    Runnable runnable;
 
     public FundsFragment() {
         // Required empty public constructor
@@ -78,6 +87,11 @@ public class FundsFragment extends Fragment {
           //  mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
+    @Override
+    public void onPause() {
+        h.removeCallbacks(runnable); //stop handler when activity not visible
+        super.onPause();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -88,9 +102,18 @@ public class FundsFragment extends Fragment {
 
         displayFunds(rootView);
 
+        h.postDelayed(new Runnable() {
+            public void run() {
+                //Load the order book
+                displayFunds(rootView);
+
+                runnable=this;
+
+                h.postDelayed(runnable, delay);
+            }
+        }, delay);
+
         displayMarketSummary(); //always call fidplaymarket summary after displayFunds.  we need end point url. we have this url in db only once  diaplyFunds finishes
-
-
 
         return rootView;
     }
@@ -241,6 +264,8 @@ public class FundsFragment extends Fragment {
                         TextView frozen_btc_label =    (TextView)  rootView.findViewById(R.id.frozen_btc_label);
                         TextView available_mxn_label = (TextView)  rootView.findViewById(R.id.available_mxn_label);
                         TextView frozen_mxn_label = (TextView)    rootView.findViewById(R.id.frozen_mxn_label);
+                        TextView available_ltc_label = (TextView)  rootView.findViewById(R.id.available_ltc_label);
+                        TextView frozen_ltc_label = (TextView)    rootView.findViewById(R.id.frozen_ltc_label);
                         TextView name = (TextView) rootView.findViewById(R.id.name);
                         TextView sn = (TextView) rootView.findViewById(R.id.sn);
                         TextView activated = (TextView) rootView.findViewById(R.id.activated);
@@ -254,6 +279,8 @@ public class FundsFragment extends Fragment {
                         frozen_btc_label.setText(String.format(Locale.getDefault(),"%.8f",asset.getFrozenBtc()));
                         available_mxn_label.setText(String.format(Locale.getDefault(),"%.8f",asset.getAvailableMxn()));
                         frozen_mxn_label.setText(String.format(Locale.getDefault(),"%.8f",asset.getFrozenMxn()));
+                        available_ltc_label.setText(String.format(Locale.getDefault(),"%.8f",asset.getAvailableLtc()));
+                        frozen_ltc_label.setText(String.format(Locale.getDefault(),"%.8f",asset.getFrozenLtc()));
 
                         String email_str = ds.query_database_key("email");
                         String sn_str = ds.query_database_key("sn");

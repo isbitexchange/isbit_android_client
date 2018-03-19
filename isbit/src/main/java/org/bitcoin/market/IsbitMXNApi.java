@@ -192,6 +192,12 @@ public class IsbitMXNApi extends AbstractMarketApi {
                 //asset.setAvailableUsd(FiatConverter.toUsd(asset.getAvailableMxn()));
                 //asset.setFrozenUsd(FiatConverter.toUsd(asset.getFrozenMxn()));
             }
+            if (currency1.equals("ltc")) {
+                asset.setAvailableLtc(balance.getDouble("balance"));
+                // asset.setAvailableMxn(FiatConverter.toUsd(asset.getAvailableMxn()));
+                asset.setFrozenLtc(balance.getDouble("locked"));
+                //asset.setFrozenMxn(FiatConverter.toUsd(asset.getFrozenMxn()));
+            }
         }
         return asset;
 
