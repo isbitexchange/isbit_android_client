@@ -27,6 +27,8 @@ import java.net.URL;
 import java.util.Date;
 import java.util.Locale;
 
+import android.os.*;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -48,6 +50,13 @@ public class FundsFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    //Handler
+    Handler h = new Handler();
+
+    //Seconds pased to reload the trading content
+    int delay = 5*1000; //1 second=1000 milisecond
+    Runnable runnable;
 
     public FundsFragment() {
         // Required empty public constructor
@@ -87,6 +96,17 @@ public class FundsFragment extends Fragment {
         final View rootView = inflater.inflate(R.layout.fragment_funds, container, false);
 
         displayFunds(rootView);
+
+        h.postDelayed(new Runnable() {
+            public void run() {
+                //Load the order book
+                displayFunds(rootView);
+
+                runnable=this;
+
+                h.postDelayed(runnable, delay);
+            }
+        }, delay);
 
         displayMarketSummary(); //always call fidplaymarket summary after displayFunds.  we need end point url. we have this url in db only once  diaplyFunds finishes
 

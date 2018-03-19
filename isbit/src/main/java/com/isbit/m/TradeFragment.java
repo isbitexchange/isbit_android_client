@@ -107,6 +107,7 @@ public class TradeFragment extends Fragment implements RefreshOrdersInformation 
 
     @Override
     public void onResume(){
+        loadOrderBook();
         h.postDelayed(new Runnable() {
             public void run() {
                 //Load the order book
