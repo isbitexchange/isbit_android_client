@@ -87,6 +87,11 @@ public class FundsFragment extends Fragment {
           //  mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
+    @Override
+    public void onPause() {
+        h.removeCallbacks(runnable); //stop handler when activity not visible
+        super.onPause();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
